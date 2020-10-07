@@ -1,0 +1,37 @@
+<?php if ( ! defined('BASEPATH')) exit('No direct script access allowed');
+
+
+if ( ! function_exists('sucursales_con_indices'))
+{
+
+function sucursales_con_indices(){
+    $bases=array(0=>"XA1",1=>"XC1",3=>"CL1",4=>"VM1",5=>"VA1",6=>"VB1",7=>"PA1");
+    return $bases;
+}
+}
+
+if ( ! function_exists('sucursales_catalogo_con_indices'))
+{
+function sucursales_catalogo_con_indices(){
+    $bases=array(0=>"XA1",1=>"XC1",3=>"CL1",4=>"VM1",5=>"VA1",6=>"VB1",7=>"PA1",8=>"CAT");
+    return $bases;
+}
+}
+
+if ( ! function_exists('sucursales_nombres_dd'))
+{
+function sucursales_nombres_dd(){
+    $bases=array("XA1"=>"Xalapa Animas"
+    	  ,"XC1"=>"Xalapa Centro"
+    	  ,"CL1"=>"Córdoba"
+    	  ,"VM1"=>"Villahermosa Morett"
+    	  ,"VA1"=>"Veracruz Americas"
+    	  ,"VB1"=>"Veracruz Bolívar"
+    	  ,"PA1"=>"Puebla Animas");
+        return $bases;
+
+}
+}
+
+?>
+

@@ -1,0 +1,153 @@
+<script>
+  $(function() {
+    $("#meses").change(function() {
+      top.location.href='/index.php/reportes/cierredemes/' + $("#anios").val() + "/" + $("#meses").val() + "/<?php echo $this->uri->segment(5); ?>";
+    });
+    $("#anios").change(function() {
+      top.location.href='/index.php/reportes/cierredemes/' + $("#anios").val() + "/" + $("#meses").val() + "/<?php echo $this->uri->segment(5); ?>";
+    });
+
+    $("#sucursal").change(function() {
+      top.location.href='/index.php/reportes/cierredemes/' + $("#anios").val() + "/" + $("#meses").val() + "/" + $("#sucursal").val();
+    });
+
+  })
+</script>
+<div class="row">
+    <div class="three columns" style="text-align:right">
+        Sucursal:
+    </div>
+    <div class="three columns">
+        <?php
+          
+           echo form_dropdown("sucursal",$sucursales,$this->uri->segment(5),"id='sucursal'");
+           ?>
+    </div>
+    <div class="six columns"></div>
+   
+</div>
+<div class="row">
+    <div class="three columns" style="text-align:right">
+        Mes:
+    </div>
+    <div class="three columns">
+        <?php
+           $meses = meses_array();
+           $mes = $this->uri->segment(4,date('n'));
+           echo form_dropdown("mes",$meses,$mes,"id='meses'");
+           ?>
+    </div>
+    <div class="three columns" style="text-align:right">
+        Año:
+    </div>
+    <div class="three columns">
+       
+        <?php
+           $anios =  anios_array(2015,2020);
+           $anio = $this->uri->segment(3,date("Y"));
+           echo form_dropdown("anios",$anios,$anio,"id='anios'");
+           ?>        
+    </div>
+</div>
+
+<div class="row">
+<div align="center">
+<table width="100%" id="datatabla" class="cell-border stripe compact hover">
+    <thead>
+<tr>
+         <th width='5%'>Suc</th>
+         <th width='8%'>Tipo</th>
+         <th width='8%'>Periodo</th>
+         <th width='8%'>Fecha</th>
+         <th width='10%'>Nota</th>
+
+         <th width='5%'>Orden</th>
+         <th width='10%'>Importe</th>
+         <th width='10%'>Equipo</th>
+         <th width='10%'>Servicio/producto</th>
+         <th width='10%'>Forma de pago</th> 
+          <th width='10%'>Observaciones</th>         
+
+</tr>
+</thead>
+<tbody>
+<?php
+
+
+foreach ($cierredemes as $item) {
+    echo "<tr>";
+    echo "<td>" . $this->uri->segment(5) . "</td>";
+    echo "<td>" . $item['descripcion_tipo'] . "</td>";
+    echo "<td>" . $item['periodo'] . "</td>";
+    echo "<td>" . $item['fecha'] . "</td>";
+    echo "<td>" . $item['numero_remision'] . "</td>";
+ 
+    echo "<td>" . $item['num_orden'] . "</td>";
+    echo "<td style='text-align:right'>" . number_format($item['importe'],2) . "</td>";
+    echo "<td>" . $item['descripcion_tipo'] . "</td>";
+    echo "<td>" . $item['descripcion_servicios'] . "</td>";
+    echo "<td>" . ucfirst(strtolower($item['forma_de_pago'])) . "</td>";    
+       echo "<td>" . $item['observaciones'] . "</td>";    
+    echo "</tr>";
+
+}
+?>
+</tbody>
+</table>
+
+
+
+</div>
+</div>
+<div class="row" style="float:right">
+    <a href="/index.php/reportes/exportarcierredemes/<?php echo $this->uri->segment(3) . "/" . $this->uri->segment(4) . "/" . $this->uri->segment(5); ?>" 
+        class="button button-primary">Exportar a Excel</a>
+</div>
+
+
+<script>
+$(document).ready(function() {
+    $('#datatabla').DataTable( {
+        paging:true,
+        searching:false,
+        ordering:false,
+        info: "",
+        iDisplayLength: 25,
+language:
+{
+    "emptyTable":     "No data available in table",
+    "info":           "Showing _START_ to _END_ of _TOTAL_ entries",
+    "infoEmpty":      "Showing 0 to 0 of 0 entries",
+    "infoFiltered":   "(filtered from _MAX_ total entries)",
+    "infoPostFix":    "",
+    "thousands":      ",",
+    "lengthMenu":     "Mostrar _MENU_ registros",
+    "loadingRecords": "Loading...",
+    "processing":     "Processing...",
+    "search":         "Search:",
+    "zeroRecords":    "No matching records found",
+    "paginate": {
+        "first":      "Primero",
+        "last":       "Ultimo",
+        "next":       "Siguiente",
+        "previous":   "Anterior"
+    },
+    "aria": {
+        "sortAscending":  ": activate to sort column ascending",
+        "sortDescending": ": activate to sort column descending"
+    }
+}               
+     });
+} );
+
+
+function marcarComoFacturado(id) {
+    if (confirm('¿Marcar como facturado?')) {
+        $.get( "/index.php/equipos/detalle/marcarcomofacturado/" + id, function( data ) {            
+            $('#f' + id).html(data);
+        });        
+    }
+    //alert(id);
+}
+
+</script>
